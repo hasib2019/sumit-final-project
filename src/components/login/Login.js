@@ -25,7 +25,10 @@ const Login = ({ userType }) => {
         if(error){
             NotificationManager.error(error.data,"",5000)
         }
-        if(data?.accessToken && data?.user){
+        if(data?.accessToken && data?.user && data?.user?.role==="admin"){
+            NotificationManager.success("Login Success","",5000)
+            navigate("/admin/dashboard")
+        } else if(data?.accessToken && data?.user && data?.user?.role==="student"){
             NotificationManager.success("Login Success","",5000)
             navigate("/leader-board")
         }

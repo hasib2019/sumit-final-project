@@ -13,25 +13,73 @@ import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
 import Videos from './pages/admin/Videos';
 import useAthCheck from './helper/useAuthCheck';
+import PrivateRouter from './middleware/PrivateRouter';
+import PublicRouter from './middleware/PublicRouter';
+import PrivateAdminRouter from './middleware/PrivateAdminRouter';
+import PublicAdminRouter from './middleware/PublicAdminRouter';
 
 function App() {
   const authChecked = useAthCheck()
-  return !authChecked?(<>Checking authintication</>): (
+  return !authChecked ? (<>Checking authintication</>) : (
     <Router>
       <Routes>
         {/* student panel  */}
-        <Route path='/' element={<StudentLogin />} />
-        <Route path="/student-registration" element={<StudentReistration />} />
-        <Route path="/leader-board" element={<Leaderboard />} />
-        <Route path="/course-player" element={<CoursePlayer />} />
-        <Route path="/quiz" element={<Quiz />} />
+        <Route path='/' element={
+          <PublicRouter>
+            <StudentLogin />
+          </PublicRouter>
+        } />
+        <Route path="/student-registration" element={
+          <PublicRouter>
+            <StudentReistration />
+          </PublicRouter>
+        } />
+        <Route path="/leader-board" element={
+          <PrivateRouter>
+            <Leaderboard />
+          </PrivateRouter>
+        } />
+        <Route path="/course-player" element={
+          <PrivateRouter>
+            <CoursePlayer />
+          </PrivateRouter>
+        } />
+        <Route path="/quiz" element={
+          <PrivateRouter>
+            <Quiz />
+          </PrivateRouter>
+        } />
         {/* Admin panel  */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/assignment" element={<Assignment />} />
-        <Route path="/admin/assignment-mark" element={<AssignmentMark />} />
-        <Route path="/admin/quizzes" element={<Quizzes />} />
-        <Route path="/admin/videos" element={<Videos />} />
+        <Route path="/admin/login" element={
+          <PublicAdminRouter>
+            <AdminLogin />
+          </PublicAdminRouter>
+
+        } />
+        <Route path="/admin/dashboard" element={
+          <PrivateAdminRouter>
+            <Dashboard />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/assignment" element={
+          <PrivateAdminRouter>
+            <Assignment />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/assignment-mark" element={
+          <PrivateAdminRouter>
+            <AssignmentMark />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/quizzes" element={<PrivateAdminRouter>
+          <Quizzes />
+        </PrivateAdminRouter>
+        } />
+        <Route path="/admin/videos" element={
+          <PrivateAdminRouter>
+            <Videos />
+          </PrivateAdminRouter>
+        } />
       </Routes>
     </Router>
   );

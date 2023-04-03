@@ -11,10 +11,7 @@ const Nav = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const logOut = () => {
-        dispatch(userLoggedOut({
-            accessToken: undefined,
-            user: undefined
-        }))
+        dispatch(userLoggedOut())
         localStorage.clear();
         navigate("/")
     }
