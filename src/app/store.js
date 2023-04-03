@@ -1,12 +1,15 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import { apiSlice } from '../features/api/apiSlice';
-// import filterSliceReducer from '../features/filter/filterSlice';
+/* eslint-disable no-unused-vars */
+import { configureStore, getDefaultMiddlewares } from '@reduxjs/toolkit';
+import { apiSlice } from '../features/api/apiSlice';
+import authSliceReducer from '../features/auth/authSlice';
 
-// export const store = configureStore({
-//   reducer: {
-//     [apiSlice.reducerPath]: apiSlice.reducer,
-//     filter: filterSliceReducer,
-//   },
-//   middleware: (getDefaultMiddlewares) =>
-//     getDefaultMiddlewares().concat(apiSlice.middleware),
-// });
+
+export const store = configureStore({
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    auth: authSliceReducer
+  },
+  devTools: process.env.NODE_ENV !=="production",
+  middleware: (getDefaultMiddlewares) =>
+    getDefaultMiddlewares().concat(apiSlice.middleware),
+});
