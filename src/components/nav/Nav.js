@@ -3,12 +3,18 @@
 import React from 'react';
 import learningportal from "../../assets/image/learningportal.svg";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userLoggedOut } from '../../features/auth/authSlice';
 
 const Nav = () => {
     const locaStorageData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null;
-    console.log({ locaStorageData })
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const logOut = () => {
+        dispatch(userLoggedOut({
+            accessToken: undefined,
+            user: undefined
+        }))
         localStorage.clear();
         navigate("/")
     }

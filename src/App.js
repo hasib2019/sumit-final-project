@@ -12,9 +12,11 @@ import AssignmentMark from './pages/admin/AssignmentMark';
 import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
 import Videos from './pages/admin/Videos';
+import useAthCheck from './helper/useAuthCheck';
 
 function App() {
-  return (
+  const authChecked = useAthCheck()
+  return !authChecked?(<>Checking authintication</>): (
     <Router>
       <Routes>
         {/* student panel  */}
