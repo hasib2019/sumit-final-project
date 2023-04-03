@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
-import { StudentNav } from '../components/nav/StudentNav'
+import Nav from '../components/nav/Nav'
 
 const Leaderboard = () => {
   return (
     <Fragment>
-      <StudentNav />
+      <Nav />
       <section className="py-6 bg-primary">
         <div className="mx-auto max-w-7xl px-5 lg:px-0">
           <div>

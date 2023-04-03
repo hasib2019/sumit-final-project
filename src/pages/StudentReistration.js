@@ -13,8 +13,6 @@ const StudentReistration = () => {
         password: '',
         confirmPassword: ''
     })
-    console.log({ userReg })
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserReg({ ...userReg, [name]: value })
@@ -24,7 +22,7 @@ const StudentReistration = () => {
     const handleSubmit = (e)=>{
         e.preventDefault();
         if(userReg.password!==userReg.confirmPassword){
-            console.log("password not match")
+            NotificationManager.error("password not match","",5000)
         } else {
             register({
                 name: userReg.name,
@@ -42,6 +40,7 @@ const StudentReistration = () => {
             NotificationManager.error(error.data,"", 5000)
         }
         if(data?.accessToken && data?.user){
+            NotificationManager.success("Login Success","", 5000)
             navigate("/leader-board")
         }
     },[data, isError, error, navigate])

@@ -1,16 +1,25 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react'
-import learningportal from "../../assets/image/learningportal.svg"
+import React from 'react';
+import learningportal from "../../assets/image/learningportal.svg";
+import { useNavigate } from 'react-router-dom';
 
-export const StudentNav = () => {
+const Nav = () => {
+    const locaStorageData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null;
+    console.log({ locaStorageData })
+    const navigate = useNavigate()
+    const logOut = () => {
+        localStorage.clear();
+        navigate("/")
+    }
     return (
-    // < !--Navigatin Bar.It contains Logo, Center Text And Save Progress Button at the end-- >
         <nav class="shadow-md">
             <div class="max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3">
                 <img class="h-10" src={learningportal} />
                 <div class="flex items-center gap-3">
-                    <h2 class="font-medium">Saad Hasan</h2>
+                    <h2 class="font-bold">{locaStorageData?.user?.name}</h2>
                     <button
+                        onClick={(e) => logOut()}
                         class="flex gap-2 items-center px-4 py-1 rounded-full text-sm transition-all bg-red-600 hover:bg-red-700 font-medium">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
@@ -22,5 +31,7 @@ export const StudentNav = () => {
                 </div>
             </div>
         </nav>
-  )
+    )
 }
+
+export default Nav
