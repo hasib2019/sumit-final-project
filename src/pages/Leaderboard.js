@@ -1,7 +1,46 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment } from 'react'
 import Nav from '../components/nav/Nav'
+import { useGetAssgnmentDataQuery, useGetLeaderBoardDataQuery } from '../features/leader-board/leaderBoardApi'
+import { NotificationManager } from 'react-notifications';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Leaderboard = () => {
+  const auth = useSelector((state) => state.auth)
+  console.log({ auth: auth?.user?.id })
+
+  const [leaderBoard, setLeaderBoard] = useState([]);
+  const [userData, setUserData] = useState({})
+  const [asignmentd, setAsignmentd] = useState({})
+  console.log({ leaderBoard, userData })
+  const { data: leaderBoardData, isLoading, isError, error } = useGetLeaderBoardDataQuery();
+  const { data: asignmentdData, isLoading: assignemtisLoading, isError: assignemtIsError, error: assignemterror } = useGetAssgnmentDataQuery();
+
+  useEffect(() => {
+    if (isLoading && assignemtisLoading){
+      <p>loading.....</p>
+    } else {
+      const findData = leaderBoardData?.filter((content) => content?.student_id !== auth?.user?.id)
+      setLeaderBoard(findData);
+      const findUserData = leaderBoardData?.find((content) => content?.student_id === auth?.user?.id)
+      setUserData(findUserData)
+      setAsignmentd(asignmentdData)
+    }
+   
+  }, [leaderBoardData, asignmentdData, isLoading, assignemtisLoading])
+
+  const findAsignemntMark =(id)=>{
+    if(asignmentdData){
+      const data = asignmentdData?.find((row)=>row.id===id)
+      console.log({data})
+      return data?.totalMark
+    } else return 0
+
+  }
+
   return (
     <Fragment>
       <Nav />
@@ -23,10 +62,10 @@ const Leaderboard = () => {
               <tbody>
                 <tr className="border-2 border-cyan">
                   <td className="table-td text-center font-bold">4</td>
-                  <td className="table-td text-center font-bold">Saad Hasan</td>
-                  <td className="table-td text-center font-bold">50</td>
-                  <td className="table-td text-center font-bold">50</td>
-                  <td className="table-td text-center font-bold">100</td>
+                  <td className="table-td text-center font-bold">{userData?.student_name}</td>
+                  <td className="table-td text-center font-bold">{userData?.mark}</td>
+                  <td className="table-td text-center font-bold">{findAsignemntMark(userData?.assignment_id)}</td>
+                  <td className="table-td text-center font-bold">{userData?.mark+findAsignemntMark(userData?.assignment_id)}</td>
                 </tr>
               </tbody>
             </table>
@@ -46,53 +85,17 @@ const Leaderboard = () => {
               </thead>
 
               <tbody>
-                <tr className="border-b border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
-
-                <tr className="border-b border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
-
-                <tr className="border-b border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
-
-                <tr className="border-b border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
-
-                <tr className="border-b border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
-
-                <tr className="border-slate-600/50">
-                  <td className="table-td text-center">4</td>
-                  <td className="table-td text-center">Saad Hasan</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">50</td>
-                  <td className="table-td text-center">100</td>
-                </tr>
+                {
+                  leaderBoard.map((row, i) => (
+                    <tr className="border-b border-slate-600/50">
+                      <td className="table-td text-center">4</td>
+                      <td className="table-td text-center">{row?.student_name}</td>
+                      <td className="table-td text-center">{row?.mark}</td>
+                      <td className="table-td text-center">{findAsignemntMark(row?.assignment_id)}</td>
+                      <td className="table-td text-center">{row?.mark+findAsignemntMark(row?.assignment_id)}</td>
+                    </tr>
+                  ))
+                }
               </tbody>
             </table>
           </div>
