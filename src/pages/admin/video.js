@@ -4,7 +4,6 @@ import Videos from '../../components/admin/videos/Videos'
 const video = () => {
     return (
         <Fragment>
-            <Nav />
             <Videos/>
         </Fragment>
     )

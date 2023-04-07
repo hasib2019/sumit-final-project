@@ -8,7 +8,7 @@ import CoursePlayer from './pages/CoursePlayer';
 import Leaderboard from './pages/Leaderboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import Assignment from './pages/admin/Assignment';
-import AssignmentMark from './pages/admin/AssignmentMark';
+import AssignmentMark from './pages/admin/assignmentMark';
 import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
 import Videos from './pages/admin/video';
@@ -17,11 +17,12 @@ import PrivateRouter from './middleware/PrivateRouter';
 import PublicRouter from './middleware/PublicRouter';
 import PrivateAdminRouter from './middleware/PrivateAdminRouter';
 import PublicAdminRouter from './middleware/PublicAdminRouter';
-
+import Layout from './Layout';
 function App() {
   const authChecked = useAthCheck()
   return !authChecked ? (<>Checking authintication</>) : (
     <Router>
+      <Layout>
       <Routes>
         {/* student panel  */}
         <Route path='/' element={
@@ -81,6 +82,8 @@ function App() {
           </PrivateAdminRouter>
         } />
       </Routes>
+      </Layout>
+ 
     </Router>
   );
 }
