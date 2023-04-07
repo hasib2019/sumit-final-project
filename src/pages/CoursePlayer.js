@@ -31,7 +31,6 @@ const CoursePlayer = () => {
     }
     return (
         <Fragment>
-            <Nav />
             {
                 !isQuiz ? (
                     <section class="py-6 bg-primary">
