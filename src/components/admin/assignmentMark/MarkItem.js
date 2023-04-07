@@ -1,9 +1,23 @@
 import React,{useState} from 'react'
+import { useDispatch } from 'react-redux';
+import { editMark } from '../../../features/assignmentMarks/assignmentMarksSlice';
 const MarkItem = ({singleMark}) => {
+const dispatch=useDispatch();
 const {id,student_id,student_name,title,assignment_id,repo_link,mark,status,createdAt}=singleMark
 const [marksGiven,setMarksGiven]=useState(null); 
 const handleChange=(e)=>{
     setMarksGiven(e.target.value)
+}
+const handleClickEvent=(e,id)=>{
+    e.preventDefault();
+    const markObj={...singleMark};
+    markObj.status="published"
+    markObj.mark=parseInt(marksGiven);
+    console.log("id----",id);
+    dispatch(editMark({
+        id,
+        data:markObj
+    }))
 }
 return (
         <tr>
@@ -16,7 +30,7 @@ return (
       <td className="table-td input-mark">
        <input max="100" value={marksGiven} onChange={handleChange}/>
         <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-            className="w-6 h-6 text-green-500 cursor-pointer hover:text-green-400">
+            className="w-6 h-6 text-green-500 cursor-pointer hover:text-green-400" onClick={(e)=>handleClickEvent(e,id)}>
             <path stroke-linecap="round" stroke-linejoin="round"
                 d="M4.5 12.75l6 6 9-13.5" />
         </svg>
