@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { Provider } from 'react-redux';
+import App from './App';
+import { store } from './app/store';
+import reportWebVitals from './reportWebVitals';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
@@ -14,7 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-      <NotificationContainer/>
+      <NotificationContainer />
     </Provider>
   </React.StrictMode>
 );
