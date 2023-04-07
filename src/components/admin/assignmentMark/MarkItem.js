@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 const MarkItem = ({singleMark}) => {
-const {id,student_id,student_name,title,assignment_id,repo_link,mark,status}=singleMark
+const {id,student_id,student_name,title,assignment_id,repo_link,mark,status,createdAt}=singleMark
 const [marksGiven,setMarksGiven]=useState(null); 
 const handleChange=(e)=>{
     setMarksGiven(e.target.value)

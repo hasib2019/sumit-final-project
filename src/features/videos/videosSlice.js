@@ -33,7 +33,7 @@ export const removeVideo=createAsyncThunk('videos/deleteVideo',async(id)=>{
 //slice for the thunk functions
 
 const videoSlice=createSlice({
-   name:'job',
+   name:'video',
    initialState,
    reducers:{
   

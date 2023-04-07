@@ -4,7 +4,6 @@ import Nav from '../components/nav/Nav'
 const Quiz = () => {
     return (
         <Fragment>
-            <Nav />
             <section className="py-6 bg-primary">
                 <div className="mx-auto max-w-7xl px-5 lg:px-0">
                     <div className="mb-8">
