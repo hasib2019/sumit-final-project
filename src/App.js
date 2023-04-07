@@ -11,7 +11,7 @@ import Assignment from './pages/admin/Assignment';
 import AssignmentMark from './pages/admin/AssignmentMark';
 import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
-import Videos from './pages/admin/Videos';
+import Videos from './pages/admin/video';
 import useAthCheck from './helper/useAuthCheck';
 import PrivateRouter from './middleware/PrivateRouter';
 import PublicRouter from './middleware/PublicRouter';
