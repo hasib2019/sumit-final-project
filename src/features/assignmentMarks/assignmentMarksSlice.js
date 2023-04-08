@@ -1,6 +1,6 @@
 
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
-import { getMarksList,createMark} from "./assignmentMarksApi";
+import { getMarksList,updateMark} from "./assignmentMarksApi";
 
 //initialState
 const initialState={
@@ -14,8 +14,8 @@ export const fetchMarks=createAsyncThunk('assignmentMarks/getMarks',async()=>{
      const respFromApi=await getMarksList();
      return respFromApi;
 })
-export const addMark=createAsyncThunk('assignmentMarks/addMark',async(data)=>{
-    const respFromApi=await createMark(data);
+export const editMark=createAsyncThunk('assignmentMarks/editMark',async({id,data})=>{
+    const respFromApi=await updateMark(id,data);
     return respFromApi;
 })
 
@@ -44,7 +44,24 @@ const assignmentMarksSlice=createSlice({
           state.isError=true;
           state.error=action?.error?.message;
           state.marks=[];
-    })     
+    })
+    .addCase(editMark.pending,(state)=>{
+       state.isLoading=true;
+       state.isError=false;
+       state.error="";
+ })
+ .addCase(editMark.fulfilled,(state,action)=>{
+     state.isLoading=false;
+     state.isError=false;
+     const updatedMarkIndex=state.marks.findIndex(elem=>elem.id==action.payload.id);
+     state.marks[updatedMarkIndex]=action.payload;
+ })
+ .addCase(editMark.rejected,(state,action)=>{
+     state.isLoading=false;
+     state.isError=true;
+     state.error=action?.error?.message;
+     state.marks=[];
+})      
     }
 })
 

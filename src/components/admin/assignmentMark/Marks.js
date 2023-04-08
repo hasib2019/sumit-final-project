@@ -1,12 +1,11 @@
 import React,{useEffect} from 'react'
 import { useSelector,useDispatch } from 'react-redux';
-import { fetchMarks } from '../../../features/assignmentMarks/assignmentMarksSlice';
+import { fetchMarks,addMark } from '../../../features/assignmentMarks/assignmentMarksSlice';
 import MarkItem from './MarkItem';
 const Marks = () => {
    const dispatch=useDispatch();
    const {isError,isLoading,marks}=useSelector(state=>state.mark);
 
-   console.log("Marks-----",marks);
   useEffect(()=>{
     dispatch(fetchMarks());
   },[])

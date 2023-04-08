@@ -2,6 +2,7 @@ import React, { Fragment ,useEffect} from 'react';
 import { fetchVideos } from '../../../features/videos/videosSlice';
 import { useSelector,useDispatch } from 'react-redux';
 import VideoListItem from './VideoListItem';
+import { Link } from 'react-router-dom';
 const Videos = () => {
     const dispatch=useDispatch();
     const {isLoading,isError,videos}=useSelector(state=>state.video);
@@ -24,9 +25,12 @@ const Videos = () => {
             <section class="py-6 bg-primary">
                 <div class="mx-auto max-w-full px-5 lg:px-20">
                     <div class="px-3 py-20 bg-opacity-10">
+                    <Link to="/admin/addEditVideo">
                         <div class="w-full flex">
                             <button class="btn ml-auto">Add Video</button>
                         </div>
+                        </Link>
+
                         <div class="overflow-x-auto mt-4">
                             <table class="divide-y-1 text-base divide-gray-600 w-full">
                                 <thead>

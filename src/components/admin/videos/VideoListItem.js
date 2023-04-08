@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch} from 'react-redux'
-import { deleteVideo } from '../../../features/videos/videosApi';
+import { useDispatch} from 'react-redux';
+import { removeVideo } from '../../../features/videos/videosSlice';
 const VideoListItem = ({video}) => {
   const dispatch=useDispatch();
   const {title,id,description,}=video;
   const deleteVideoHandler=(id)=>{
-   dispatch(deleteVideo(id));
+   dispatch(removeVideo(id));
   }
   return (
     <tr>
