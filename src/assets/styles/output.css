@@ -212,6 +212,9 @@ button,
 select {
   text-transform: none;
 }
+#addFormBtn{
+  background-color: blueviolet;
+}
 
 /*
 1. Correct the inability to style clickable types in iOS and Safari.

@@ -6,6 +6,7 @@ import { addVideo } from "../../../features/videos/videosSlice";
 import { useDispatch,useSelector } from "react-redux";
 import Error from "../../../ui/Error";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const initialState={
     title:"",
     description:"",
@@ -17,13 +18,19 @@ const initialState={
 }
 const AddEditVideo = () =>  {
     const dispatch=useDispatch();
-
-    const {isLoading,isError,error}=useSelector(state=>state.video);
+    const {isLoading,isError,error,editingObj}=useSelector(state=>state.video);
+    const {id}=editingObj||{}
+    let navigate = useNavigate(); 
+    
+    //local state for main form
     const [videoInfo,setVideoInfo]=useState(initialState);
     const {title,date,description,duration,url,views}=videoInfo;
-
-    let navigate = useNavigate(); 
-
+    useEffect(()=>{
+          if(id){
+               setVideoInfo(editingObj);
+          }
+    },[editingObj])
+     console.log("Edting Obj & editing mode---",editingObj);
     const handleChange=(e)=>{
       const {name,value}=e.target;
       setVideoInfo({
@@ -113,7 +120,7 @@ const AddEditVideo = () =>  {
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 "
                         onClick={handleSubmit}
                     >
-                        Save
+                        {id?"Update":"Save"}
                     </button>
                 </div>
                 {isError && (

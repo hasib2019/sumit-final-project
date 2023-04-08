@@ -36,7 +36,12 @@ const videoSlice=createSlice({
    name:'video',
    initialState,
    reducers:{
-  
+    editActive:(state,action)=>{
+        state.editingObj=action.payload;
+       },
+       editInActive:(state)=>{
+        state.editingObj={};
+       },
    },
    extraReducers:(builder)=>{
     builder
@@ -72,22 +77,23 @@ const videoSlice=createSlice({
       state.error=action.error.message;
   }
   )
-//   .addCase(updateJob.pending,(state)=>{
-//     state.isLoading=true;
-//     state.isError=false;
-//     state.error="";
-// })
-// .addCase(updateJob.fulfilled,(state,action)=>{
-//   state.isLoading=false;
-//   state.isError=false;
-//   const updatedJobIndex=state.jobs.findIndex(elem=>elem.id==action.payload.id);
-//     state.jobs[updatedJobIndex]=action.payload;
-// })
-// .addCase(updateJob.rejected,(state,action)=>{
-//   state.isLoading=false;
-//   state.isError=true;
-//   state.error=action.error.message;
-// })
+  .addCase(editVideo.pending,(state)=>{
+    state.isLoading=true;
+    state.isError=false;
+    state.error="";
+    state.editingMode=false;
+})
+.addCase(editVideo.fulfilled,(state,action)=>{
+  state.isLoading=false;
+  state.isError=false;
+  const updatedJobIndex=state.videos.findIndex(elem=>elem.id==action.payload.id);
+    state.videos[updatedJobIndex]=action.payload;
+})
+.addCase(editVideo.rejected,(state,action)=>{
+  state.isLoading=false;
+  state.isError=true;
+  state.error=action.error.message;
+})
 .addCase(removeVideo.pending,(state)=>{
     state.isLoading=true;
     state.isError=false;
@@ -110,4 +116,4 @@ const videoSlice=createSlice({
 })
 
 export default videoSlice.reducer;
-// export const {editActive,editInActive,salarySortingFilter,jobTypeFilter,searchedTextFilter} = videoSlice.actions;
+export const {editActive,editInActive} = videoSlice.actions;
