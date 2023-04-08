@@ -14,32 +14,46 @@ const Leaderboard = () => {
 
   const [leaderBoard, setLeaderBoard] = useState([]);
   const [userData, setUserData] = useState({})
-  const [asignmentd, setAsignmentd] = useState({})
-  console.log({ leaderBoard, userData })
+  const [rankData, setRankData] = useState([])
+  console.log({ leaderBoard, userData, rankData })
   const { data: leaderBoardData, isLoading, isError, error } = useGetLeaderBoardDataQuery();
   const { data: asignmentdData, isLoading: assignemtisLoading, isError: assignemtIsError, error: assignemterror } = useGetAssgnmentDataQuery();
 
   useEffect(() => {
-    if (isLoading && assignemtisLoading){
+    if (isLoading && assignemtisLoading) {
       <p>loading.....</p>
     } else {
-      const findData = leaderBoardData?.filter((content) => content?.student_id !== auth?.user?.id)
-      setLeaderBoard(findData);
+      setLeaderBoard(leaderBoardData);
       const findUserData = leaderBoardData?.find((content) => content?.student_id === auth?.user?.id)
       setUserData(findUserData)
-      setAsignmentd(asignmentdData)
+      const namesArray = leaderBoardData?.map(obj => obj.mark + asignmentdData?.find((row) => row.id === obj.assignment_id)?.totalMark);
+      setRankData(namesArray)
     }
-   
+
   }, [leaderBoardData, asignmentdData, isLoading, assignemtisLoading])
 
-  const findAsignemntMark =(id)=>{
-    if(asignmentdData){
-      const data = asignmentdData?.find((row)=>row.id===id)
-      console.log({data})
+  const findAsignemntMark = (id) => {
+    if (asignmentdData) {
+      const data = asignmentdData?.find((row) => row.id === id)
       return data?.totalMark
     } else return 0
-
   }
+
+  const getRank = (total, scores) => {
+    console.log({ total, scores })
+      const sortedScores = scores.sort((a, b) => b - a);
+      let rank = 1;
+      for (let i = 0; i < sortedScores.length; i++) {
+        if (sortedScores[i] === total) {
+          return rank;
+        }
+        if (sortedScores[i] > total) {
+          rank++;
+        }
+      }
+      return sortedScores.length + 1;
+  }
+
 
   return (
     <Fragment>
@@ -60,11 +74,11 @@ const Leaderboard = () => {
 
               <tbody>
                 <tr className="border-2 border-cyan">
-                  <td className="table-td text-center font-bold">4</td>
+                  <td className="table-td text-center font-bold">{getRank(userData?.mark + findAsignemntMark(userData?.assignment_id), rankData)}</td>
                   <td className="table-td text-center font-bold">{userData?.student_name}</td>
                   <td className="table-td text-center font-bold">{userData?.mark}</td>
                   <td className="table-td text-center font-bold">{findAsignemntMark(userData?.assignment_id)}</td>
-                  <td className="table-td text-center font-bold">{userData?.mark+findAsignemntMark(userData?.assignment_id)}</td>
+                  <td className="table-td text-center font-bold">{userData?.mark + findAsignemntMark(userData?.assignment_id)}</td>
                 </tr>
               </tbody>
             </table>
@@ -87,11 +101,11 @@ const Leaderboard = () => {
                 {
                   leaderBoard.map((row, i) => (
                     <tr className="border-b border-slate-600/50">
-                      <td className="table-td text-center">4</td>
+                      <td className="table-td text-center">{getRank(row?.mark + findAsignemntMark(row?.assignment_id), rankData)}</td>
                       <td className="table-td text-center">{row?.student_name}</td>
                       <td className="table-td text-center">{row?.mark}</td>
                       <td className="table-td text-center">{findAsignemntMark(row?.assignment_id)}</td>
-                      <td className="table-td text-center">{row?.mark+findAsignemntMark(row?.assignment_id)}</td>
+                      <td className="table-td text-center">{row?.mark + findAsignemntMark(row?.assignment_id)}</td>
                     </tr>
                   ))
                 }

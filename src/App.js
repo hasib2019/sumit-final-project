@@ -8,7 +8,7 @@ import CoursePlayer from './pages/CoursePlayer';
 import Leaderboard from './pages/Leaderboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import Assignment from './pages/admin/Assignment';
-import AssignmentMark from './pages/admin/assignmentMark';
+import AssignmentMark from './pages/admin/AssignmentMark';
 import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
 import Videos from './pages/admin/video';
