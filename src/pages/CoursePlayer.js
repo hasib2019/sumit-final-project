@@ -9,9 +9,10 @@ import Quiz from './Quiz';
 
 const CoursePlayer = () => {
     const [videos, setVideos] = useState();
+    const [showVideo, setShowVideo] = useState({})
     const [quizId, setQuizId] = useState();
     const [isQuiz, setIsQuiz] = useState(false)
-    console.log({ videos })
+    console.log({ showVideo })
     const { data: allVideos, isLoading: loadningVideos, isError: videosIsError, error: videosError } = useGetvideosDataQuery()
     useEffect(() => {
         if (loadningVideos) {
@@ -20,15 +21,24 @@ const CoursePlayer = () => {
             NotificationManager.error(videosError.data)
         } else {
             setVideos(allVideos)
+            setShowVideo(allVideos[0])
         }
-
     }, [allVideos, loadningVideos, videosError]);
 
     const changeQuiz = (e) => {
-        console.log({ work: 'work data' })
         setQuizId(1)
         setIsQuiz(true)
     }
+
+    const createdAt = (getData)=>{
+        const date = new Date(getData);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = date.toLocaleDateString('en-US', options);
+        return formattedDate
+    }
+
+
+
     return (
         <Fragment>
             {
@@ -37,7 +47,7 @@ const CoursePlayer = () => {
                         <div class="mx-auto max-w-7xl px-5 lg:px-0">
                             <div class="grid grid-cols-3 gap-2 lg:gap-8">
                                 <div class="col-span-full w-full space-y-8 lg:col-span-2">
-                                    <iframe width="100%" class="aspect-video" src="https://www.youtube.com/embed/56zUkaXJnUA"
+                                    <iframe width="100%" class="aspect-video" src={showVideo?.url}
                                         title="Things I wish I knew as a Junior Web Developer - Sumit Saha - BASIS SoftExpo 2023"
                                         frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -45,33 +55,23 @@ const CoursePlayer = () => {
 
                                     <div>
                                         <h1 class="text-lg font-semibold tracking-tight text-slate-100">
-                                            Things I wish I knew as a Junior Web Developer - Sumit Saha - BASIS SoftExpo 2023
+                                            {showVideo?.title}
                                         </h1>
                                         <h2 class=" pb-4 text-sm leading-[1.7142857] text-slate-400">
-                                            Uploaded on 23 February
-                                            2020</h2>
+                                            Uploaded on  {createdAt(showVideo?.createdAt)}</h2>
 
                                         <div class="flex gap-4">
-                                            <a href="#"
-                                                class="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
+                                            <a href="#" class="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
                                                 এসাইনমেন্ট
                                             </a>
                                             <Link onClick={(e) => changeQuiz(e)}>
-                                                <a
-                                                    class="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">কুইজে
-                                                    অংশগ্রহণ
-                                                    করুন</a>
+                                                <a class="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
+                                                    কুইজে অংশগ্রহণ করুন
+                                                </a>
                                             </Link>
                                         </div>
                                         <p class="mt-4 text-sm text-slate-400 leading-6">
-                                            আপনারা যারা বিগিনার হিসেবে রিয়্যাক্ট জেস নিয়ে কাজ করা শুরু করেছেন, তারা রিয়্যাক্ট এর বেশ
-                                            কিছু কনসেপ্ট ঠিক মতো আয়ত্ত না করতে পারার কারণে বিচিত্র কিছু সমস্যার সম্মুখীন হন এবং শেষ
-                                            পর্যন্ত বুঝতে না
-                                            পেরে হতাশ হয়ে পড়েন। তাদের জন্যই এই ভিডিওটি। এই ভিডিওতে আমি এমন ১০টি সমস্যার কথা তুলে ধরেছি
-                                            যেগুলো
-                                            বিগিনার হিসেবে আপনারা অহরহ সম্মুখীন হবেন। আশা করি ভিডিওটি দেখলে আপনাদের এই সমস্যাগুলো নিয়ে
-                                            আর কনফিউশন
-                                            থাকবেনা।
+                                            {showVideo?.description}
                                         </p>
 
 
@@ -91,9 +91,9 @@ const CoursePlayer = () => {
                                                 </svg>
                                                 {/* <!-- Description --> */}
                                                 <div clas="flex flex-col w-full">
-                                                    <a href="#">
+                                                    <Link onClick={(e) => setShowVideo(item)}>
                                                         <p class="text-slate-50 text-sm font-medium">{item?.title}</p>
-                                                    </a>
+                                                    </Link>
                                                     <div>
                                                         <span class="text-gray-400 text-xs mt-1">{item?.duration} Mins</span>
                                                         <span class="text-gray-400 text-xs mt-1"> | </span>
@@ -108,7 +108,7 @@ const CoursePlayer = () => {
                         </div>
                     </section>
                 ) : (
-                    <Quiz {...{quizId}}/>
+                    <Quiz {...{ quizId }} />
                 )
             }
         </Fragment>
