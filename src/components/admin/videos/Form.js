@@ -3,43 +3,45 @@ import { useState } from "react";
 import TextArea from "../../../ui/TextArea";
 import TextInput from "../../../ui/TextInput";
 import { addVideo } from "../../../features/videos/videosSlice";
-export default function Form() {
+import { useDispatch,useSelector } from "react-redux";
+import Error from "../../../ui/Error";
+import { useNavigate } from "react-router-dom";
+const initialState={
+    title:"",
+    description:"",
+    url:"",
+    date:null,
+    duration:"",
+    views:"",
+    duration:""
+}
+const AddEditVideo = () =>  {
+    const dispatch=useDispatch();
 
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [description, setDescription] = useState("");
-    const [link, setLink] = useState("");
-    const [thumbnail, setThumbnail] = useState("");
-    const [date, setDate] = useState("");
-    const [duration, setDuration] = useState("");
-    const [views, setViews] = useState("");
-     
-    const resetForm = () => {
-        setTitle("");
-        setDescription("");
-        setAuthor("");
-        setLink("");
-        setThumbnail("");
-        setDate("");
-        setDuration("");
-        setViews("");
-    };
+    const {isLoading,isError,error}=useSelector(state=>state.video);
+    const [videoInfo,setVideoInfo]=useState(initialState);
+    const {title,date,description,duration,url,views}=videoInfo;
 
+    let navigate = useNavigate(); 
+
+    const handleChange=(e)=>{
+      const {name,value}=e.target;
+      setVideoInfo({
+        ...videoInfo,
+        [name]:value
+      })
+      
+    }
     const handleSubmit = (e) => {
+        let path="/admin/videos"
         e.preventDefault();
-        addVideo({
-            title,
-            description,
-            author,
-            link,
-            thumbnail,
-            date,
-            duration,
-            views,
-        });
-        resetForm();
+        dispatch(addVideo({title,
+            createdAt:date,
+            description,duration,url,views
+        }));
+        setVideoInfo(initialState);
+        navigate(path)
     };
-
     return (
         <form method="POST" onSubmit={handleSubmit}>
             <div className="shadow overflow-hidden sm:rounded-md">
@@ -49,15 +51,18 @@ export default function Form() {
                             <TextInput
                                 title="Video title"
                                 value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                name="title"
+                                onChange={handleChange}
                             />
                         </div>
 
-                        <div className="col-span-6 sm:col-span-3">
+               
+                        <div className="col-span-6">
                             <TextInput
-                                title="Author"
-                                value={author}
-                                onChange={(e) => setAuthor(e.target.value)}
+                                title="Video Duration"
+                                value={duration}
+                                name="duration"
+                                onChange={handleChange}
                             />
                         </div>
 
@@ -65,69 +70,57 @@ export default function Form() {
                             <TextArea
                                 title="Description"
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                name="description"
+                                onChange={handleChange}
                             />
                         </div>
-
                         <div className="col-span-6">
                             <TextInput
-                                title="YouTube Video link"
-                                value={link}
-                                onChange={(e) => setLink(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                            <TextInput
-                                title="Thumbnail link"
-                                value={thumbnail}
-                                onChange={(e) => setThumbnail(e.target.value)}
+                                title="Upload Date"
+                                value={date}
+                                type="date"
+                                name="date"
+                                onChange={handleChange}
                             />
                         </div>
 
                         <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                             <TextInput
-                                title="Upload Date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
+                                title="Url"
+                                value={url}
+                                name="url"
+                                onChange={handleChange}
                             />
                         </div>
 
-                        <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                            <TextInput
-                                title="Video Duration"
-                                value={duration}
-                                onChange={(e) => setDuration(e.target.value)}
-                            />
-                        </div>
-
+        
+                       
                         <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                             <TextInput
                                 title="Video no of views"
                                 value={views}
-                                onChange={(e) => setViews(e.target.value)}
+                                name="views"
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <button
-                        // disabled={isLoading}
+                        disabled={isLoading}
                         id="addFormBtn"
                         type="submit"
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 "
+                        onClick={handleSubmit}
                     >
                         Save
                     </button>
                 </div>
-{/* 
-                {isSuccess && (
-                    <Success message="Video was added successfully" />
-                )}
                 {isError && (
-                    <Error message="There was an error adding video!" />
-                )} */}
+                    <Error error={error} />
+                )}
             </div>
         </form>
     );
 }
+export default AddEditVideo;

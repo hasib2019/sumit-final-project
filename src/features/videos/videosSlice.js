@@ -56,22 +56,22 @@ const videoSlice=createSlice({
         state.error=action?.error?.message;
         state.videos=[];
   })
-//   .addCase(createJob.pending,(state)=>{
-//         state.isLoading=true;
-//         state.isError=false;
-//         state.error="";
-//   })
-//   .addCase(createJob.fulfilled,(state,action)=>{
-//       state.isLoading=false;
-//       state.isError=false;
-//         state.jobs.push(action.payload);
-//   })
-//   .addCase(createJob.rejected,(state,action)=>{
-//       state.isLoading=false;
-//       state.isError=true;
-//       state.error=action.error.message;
-//   }
-//   )
+  .addCase(addVideo.pending,(state)=>{
+        state.isLoading=true;
+        state.isError=false;
+        state.error="";
+  })
+  .addCase(addVideo.fulfilled,(state,action)=>{
+      state.isLoading=false;
+      state.isError=false;
+        state.videos.push(action.payload);
+  })
+  .addCase(addVideo.rejected,(state,action)=>{
+      state.isLoading=false;
+      state.isError=true;
+      state.error=action.error.message;
+  }
+  )
 //   .addCase(updateJob.pending,(state)=>{
 //     state.isLoading=true;
 //     state.isError=false;
@@ -88,22 +88,22 @@ const videoSlice=createSlice({
 //   state.isError=true;
 //   state.error=action.error.message;
 // })
-// .addCase(deleteJob.pending,(state)=>{
-//     state.isLoading=true;
-//     state.isError=false;
-//     state.error="";
-// })
-// .addCase(deleteJob.fulfilled,(state,action)=>{
-//   state.isLoading=false;
-//   state.isError=false;
-//   state.jobs=state.jobs.filter(elem=>elem.id!=action.meta.arg);
-// })
-// .addCase(deleteJob.rejected,(state,action)=>{
-//   state.isLoading=false;
-//   state.isError=true;
-//   state.error=action.error.message;
-// }
-// )
+.addCase(removeVideo.pending,(state)=>{
+    state.isLoading=true;
+    state.isError=false;
+    state.error="";
+})
+.addCase(removeVideo.fulfilled,(state,action)=>{
+  state.isLoading=false;
+  state.isError=false;
+  state.videos=state.videos.filter(elem=>elem.id!=action.meta.arg);
+})
+.addCase(removeVideo.rejected,(state,action)=>{
+  state.isLoading=false;
+  state.isError=true;
+  state.error=action.error.message;
+}
+)
 
 
 }
