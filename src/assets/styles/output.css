@@ -1498,3 +1498,23 @@ body {
     }
   }
 }
+
+.nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-item {
+  margin-left: 3rem;
+}
+
+.nav-link{
+  font-size: 19px;
+
+  color: white;
+}
+
+.nav-link:hover{
+  color: #1ae5f7;
+}
