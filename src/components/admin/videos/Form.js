@@ -2,7 +2,7 @@
 import { useState } from "react";
 import TextArea from "../../../ui/TextArea";
 import TextInput from "../../../ui/TextInput";
-import { addVideo } from "../../../features/videos/videosSlice";
+import { addVideo, editVideo } from "../../../features/videos/videosSlice";
 import { useDispatch,useSelector } from "react-redux";
 import Error from "../../../ui/Error";
 import { useNavigate } from "react-router-dom";
@@ -36,16 +36,25 @@ const AddEditVideo = () =>  {
       setVideoInfo({
         ...videoInfo,
         [name]:value
-      })
-      
+      }) 
     }
     const handleSubmit = (e) => {
         let path="/admin/videos"
         e.preventDefault();
+        if(id){
+            let data={title,
+            createdAt:date,
+            description,duration,url,views}
+            dispatch(editVideo({
+                data,
+                id
+            }));   
+        }else{
         dispatch(addVideo({title,
             createdAt:date,
             description,duration,url,views
         }));
+       }
         setVideoInfo(initialState);
         navigate(path)
     };

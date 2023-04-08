@@ -38,10 +38,7 @@ const videoSlice=createSlice({
    reducers:{
     editActive:(state,action)=>{
         state.editingObj=action.payload;
-       },
-       editInActive:(state)=>{
-        state.editingObj={};
-       },
+       }
    },
    extraReducers:(builder)=>{
     builder
@@ -88,6 +85,7 @@ const videoSlice=createSlice({
   state.isError=false;
   const updatedJobIndex=state.videos.findIndex(elem=>elem.id==action.payload.id);
     state.videos[updatedJobIndex]=action.payload;
+    state.editingObj={}
 })
 .addCase(editVideo.rejected,(state,action)=>{
   state.isLoading=false;
