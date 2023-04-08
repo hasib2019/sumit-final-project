@@ -17,6 +17,7 @@ import PrivateRouter from './middleware/PrivateRouter';
 import PublicRouter from './middleware/PublicRouter';
 import PrivateAdminRouter from './middleware/PrivateAdminRouter';
 import PublicAdminRouter from './middleware/PublicAdminRouter';
+import AddEditVideo from './components/admin/videos/AddEditVideo';
 import Layout from './Layout';
 function App() {
   const authChecked = useAthCheck()
@@ -79,6 +80,11 @@ function App() {
         <Route path="/admin/videos" element={
           <PrivateAdminRouter>
             <Videos />
+          </PrivateAdminRouter>
+        } />
+            <Route path="/admin/addEditVideo" element={
+          <PrivateAdminRouter>
+            <AddEditVideo />
           </PrivateAdminRouter>
         } />
       </Routes>
